@@ -651,13 +651,13 @@ def knowledge_mixing(
 
     import shutil
 
-    print("\n\n\n\n", biggest_file, "\n\n\n\n")
-    shutil.copy(biggest_file, dataset_file.path)
-
     if biggest_file:
         print(f"The file with the biggest cut size is: {biggest_file.name}")
         print(str(biggest_file))
+        shutil.copy(biggest_file, dataset_file.path)
+        return str(biggest_file)
     else:
         print("No matching files found.")
-
-    return str(biggest_file)
+        raise ValueError(
+            "No feasible cut sizes are found. No mixed datasets are generated."
+        )

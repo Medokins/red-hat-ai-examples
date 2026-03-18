@@ -341,6 +341,7 @@ def merge_all_outputs_component(
 ):
     """Combine all generated data into a single output."""
     import os
+    from pathlib import Path
 
     from datasets import load_dataset
 
@@ -365,6 +366,17 @@ def merge_all_outputs_component(
     print(f"  - Detailed: {len(detailed)} records")
     print(f"  - Key Facts: {len(key_facts)} records")
     print(f"  - Doc QA: {len(doc_qa)} records")
+
+    dataset_output_folders = [
+        "extractive_summary",
+        "detailed_summary",
+        "key_facts_to_qa",
+        "document_based_qa",
+    ]
+    for dataset_folder in dataset_output_folders:
+        dataset_output_dir = Path(merged_output.path) / dataset_folder
+        dataset_output_dir.mkdir(parents=True, exist_ok=True)
+        print(f"Created output directory for {dataset_folder}")
 
     extractive.to_json(
         os.path.join(merged_output.path, "extractive_summary", "gen.jsonl"),

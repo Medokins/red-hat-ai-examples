@@ -54,10 +54,14 @@ def document_processing(
 
     WEB_URLS = []
     for idx, url in enumerate(web_urls.split(",")):
-        WEB_URLS.append((
-            f"url-{idx + 1}",
-            url,
-        ))
+        if url.strip():
+            WEB_URLS.append((
+                f"url-{idx + 1}",
+                url.strip(),
+            ))
+
+    if not WEB_URLS:
+        raise ValueError("web_urls must contain at least one non-empty URL")
 
     # Let Docling use the default cache location where models were downloaded
     pdf_pipeline_options = PdfPipelineOptions()
@@ -78,9 +82,6 @@ def document_processing(
         f"Number of md files in {DOCLING_OUTPUT_DIR}: ",
         len(glob.glob(f"{DOCLING_OUTPUT_DIR}/*.md")),
     )
-
-    with open(glob.glob(f"{DOCLING_OUTPUT_DIR}/*.md")[0]) as f:
-        text = f.read()
 
     def chunk_markdown(
         text: str, max_tokens: int = 200, overlap: int = 50
@@ -162,9 +163,27 @@ def document_processing(
         print(f"Saved {len(chunks)} chunks to {path}")
         return path
 
-    chunks = chunk_markdown(
-        text, max_tokens=chunk_max_tokens, overlap=chunk_overlap_tokens
-    )
+    markdown_files = sorted(DOCLING_OUTPUT_DIR.glob("*.md"))
+    if not markdown_files:
+        raise FileNotFoundError(
+            f"No markdown files were generated in {DOCLING_OUTPUT_DIR}"
+        )
+
+    print(f"Number of Markdown files : {len(markdown_files)}")
+    print(f"List of Markdown files : {markdown_files}")
+    chunks = []
+    print("Chunking of markdown files")
+    print("-----------------------------------", end="\n\n\n")
+    for markdown_file in markdown_files:
+        print(f"Chunking file : {markdown_file} \n\n")
+        text = markdown_file.read_text(encoding="utf-8")
+        chunks.extend(
+            chunk_markdown(
+                text,
+                max_tokens=chunk_max_tokens,
+                overlap=chunk_overlap_tokens,
+            )
+        )
 
     _ = save_chunks_to_jsonl(chunks, f"{OUTPUT_DIR}/chunks.jsonl")
 

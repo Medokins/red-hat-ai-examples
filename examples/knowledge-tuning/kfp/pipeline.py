@@ -84,7 +84,7 @@ def convert_pipeline(
         icl_query2=icl_query2,
         icl_query3=icl_query3,
     )
-    document_processing_task.set_caching_options(True)
+    document_processing_task.set_caching_options(False)
 
     # Step 2: Knowledge Generation
     # Knowledge Generation - Generate 4 different types of datasets
@@ -99,7 +99,7 @@ def convert_pipeline(
         inference_timeout=inference_timeout,
         number_of_summaries=number_of_summaries,
     )
-    detailed_summary_task.set_caching_options(True)
+    detailed_summary_task.set_caching_options(False)
 
     extractive_summary_task = generate_extractive_summaries(
         input_dataset=document_processing_task.outputs["output_path"],
@@ -112,7 +112,7 @@ def convert_pipeline(
         max_concurrency=max_concurrency,
         inference_timeout=inference_timeout,
     )
-    extractive_summary_task.set_caching_options(True)
+    extractive_summary_task.set_caching_options(False)
 
     key_facts_summary_task = generate_key_facts_summary(
         input_dataset=document_processing_task.outputs["output_path"],
@@ -124,7 +124,7 @@ def convert_pipeline(
         max_concurrency=max_concurrency,
         inference_timeout=inference_timeout,
     )
-    key_facts_summary_task.set_caching_options(True)
+    key_facts_summary_task.set_caching_options(False)
 
     document_based_qa_task = generate_document_based_qa(
         input_dataset=document_processing_task.outputs["output_path"],
@@ -136,7 +136,7 @@ def convert_pipeline(
         max_concurrency=max_concurrency,
         inference_timeout=inference_timeout,
     )
-    document_based_qa_task.set_caching_options(True)
+    document_based_qa_task.set_caching_options(False)
 
     # Extractive summary is heavy on the inference server
     # So its not feasible to parallize this process with the dataset
@@ -150,7 +150,7 @@ def convert_pipeline(
         key_facts_data=key_facts_summary_task.outputs["output_path"],
         doc_qa_data=document_based_qa_task.outputs["output_path"],
     )
-    merged_dataset_task.set_caching_options(True)
+    merged_dataset_task.set_caching_options(False)
 
     # Step 3: Knowledge Mixing
     # Knowledge Mixing
@@ -161,7 +161,7 @@ def convert_pipeline(
         qa_per_doc=qa_per_doc,
         save_gpt_oss_format=save_gpt_oss_format,
     )
-    knowledge_mixing_task.set_caching_options(True)
+    knowledge_mixing_task.set_caching_options(False)
 
     # Step 4:
     # Model Finetuning
