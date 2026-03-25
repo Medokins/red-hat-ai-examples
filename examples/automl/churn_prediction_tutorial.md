@@ -97,7 +97,7 @@ Configure the **Pipeline Server** for your project so that pipeline runs and art
 
 | Step | Action |
 |------|--------|
-| **①** | Download the Customer Churn dataset: [WA_FnUseC_TelcoCustomerChurn.csv](data/churn/input_data/benchmark_data.csv) (in the `data` folder in this repository). |
+| **①** | Download the Customer Churn dataset: [WA_FnUseC_TelcoCustomerChurn.csv](data/churn/input_data/WA_FnUseC_TelcoCustomerChurn.csv.csv) (in the `data` folder in this repository). |
 | **②** | Upload the file to the S3 bucket configured in the **training data** connection. Place it in a path you will use as the object key (for example, `data/WA_FnUseC_TelcoCustomerChurn.csv` or just `WA_FnUseC_TelcoCustomerChurn.csv`). |
 | **③** | Note the **bucket name** and the **object key** (path) of the file; you will need them for `train_data_bucket_name` and `train_data_file_key` in the pipeline run. |
 
@@ -206,7 +206,7 @@ The refit stage writes each top-N model to the pipeline workspace/artifact store
 | **④** | Enter **Model name** and optional **Description**. Enter **Version name** and set **Source model format** (e.g. custom or the format your registry uses for AutoGluon).                                                                                                                                                                                                                                                                                                                                                                          |
 | **⑤** | Click **Register**. The model appears in the Model registry and can be used for versioning, promotion, and deployment (e.g. via the single-model serving platform).                                                                                                                                                                                                                                                                                                                                                                              |
 
-For the pipeline definition and artifact layout, see the [autogluon_tabular_training_pipeline](https://github.com/red-hat-data-services/pipelines-components/blob/main/pipelines/training/automl/autogluon_tabular_training_pipeline/pipeline.py) (pipeline name: `autogluon-tabular-training-pipeline`). For more on working with model registries, see [Working with model registries](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.22/html/working_with_model_registries/working-with-model-registries_model-registry).
+For the pipeline definition and artifact layout, see the [autogluon_tabular_training_pipeline](https://github.com/red-hat-data-services/pipelines-components/blob/main/pipelines/training/automl/autogluon_tabular_training_pipeline/pipeline.p) (pipeline name: `autogluon-tabular-training-pipeline`). For more on working with model registries, see [Working with model registries](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.22/html/working_with_model_registries/working-with-model-registries_model-registry).
 
 <a id="prepare-the-servingruntime-for-autogluon-with-kserve"></a>
 
